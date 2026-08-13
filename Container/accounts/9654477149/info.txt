@@ -1,5 +1,0 @@
-first_name=Chisom
-last_name=Anyanwu
-age=21
-email=chisom@gmail.com
-contact=08133064878
