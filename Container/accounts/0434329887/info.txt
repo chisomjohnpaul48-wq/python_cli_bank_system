@@ -1,0 +1,5 @@
+first_name=Lucky
+last_name=Zamani
+age=24
+email=Luckykush@gmail.com
+contact=1234567890
