@@ -50,6 +50,16 @@ def get_pin():
         except KeyboardInterrupt:
             return
 
+def get_amount():
+    while True:
+        try:
+            amount = float(input("Enter amount: "))
+            return amount
+        except ValueError:
+            print("Invalid input.")
+        except KeyboardInterrupt:
+            return
+
 
 def collect_registration_data():
     age = get_age()

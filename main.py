@@ -1,5 +1,6 @@
 import cli_handlers
 import storage
+import transactions
 
 
 storage.init_storage()
@@ -29,25 +30,37 @@ Enter action""")
             else:
                 print(f"Welcome {login.first_name}")
                 while True:
-                    print("[1] Check Balance: :[2] Deposit: :[3] Withdraw: :[4] Logout")
+                    print("[1] Check Balance: :[2] Deposit: :[3] Withdraw: :[4] Transaction History: :[5] Logout")
                     user_input2 = input("> ")
                     if user_input2 == "1":
                         print(f"Your account balance is {login.check_balance()}")
+
                     elif user_input2 == "2":
-                        amount_to_deposit = int(input("Enter amount: "))
+                        amount_to_deposit = cli_handlers.get_amount()
                         deposit = login.deposit(amount_to_deposit)
                         if deposit:
                             print("Transaction successful.")
                         else:
                             print("Transaction failed.")
+
                     elif user_input2 == "3":
-                        amount_to_withdraw = int(input("Enter amount: "))
+                        amount_to_withdraw = cli_handlers.get_amount()
                         withdraw = login.withdrawal(amount_to_withdraw)
                         if withdraw:
                             print("Transaction successful.")
                         else:
                             print("Transaction failed.")
+
                     elif user_input2 == "4":
+                        txn_history = login.read_txns()
+                        if txn_history:
+                            print("===== TRANSACTION HISTORY =====")
+                            for transaction in txn_history:
+                                print(transaction, end="")
+                        else:
+                            print("<Empty>: Nothing to see here.")
+
+                    elif user_input2 == "5":
                         print(f"Logged out {login.first_name}")
                         break
                     else: 
@@ -56,7 +69,7 @@ Enter action""")
 
         elif user_input == "3":
             ##EXIT
-            print("Thank you for your patronage.")
+            print("Thank you for banking with us.")
             break
 
         else:

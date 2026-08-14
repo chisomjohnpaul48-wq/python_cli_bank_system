@@ -105,3 +105,37 @@ def update_balance(acct_num, new_balance):
             return False
     else:
         return None
+
+##==========BUILDING TRANSACTION STORAGE FUNCTIONS==========##
+def append_transaction_records(acct_num, transaction_line):
+    if not account_exists(acct_num):
+        return None
+    else:
+        try:
+            account_dir_transact = os.path.join("Container", "accounts", acct_num, "transactions.txt")
+            with open(account_dir_transact, "a") as file:
+                file.write(transaction_line + "\n")
+                return True
+        except FileNotFoundError:
+            return False
+        except OSError as e:
+            print(f"Error initializing storage: {e}")
+            return False
+
+def read_transaction_records(acct_num):
+    if not account_exists(acct_num):
+        return None
+    else:
+        try:
+            account_dir_transact = os.path.join("Container", "accounts", acct_num, "transactions.txt")
+            with open(account_dir_transact, "r") as file:
+                content = file.readlines()
+                if content:
+                    return content
+                else:
+                    return None
+        except FileNotFoundError:
+            return False
+        except OSError as e:
+            print(f"Error initializing storage: {e}")
+            return False

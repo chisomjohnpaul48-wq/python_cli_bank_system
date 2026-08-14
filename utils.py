@@ -1,3 +1,4 @@
+from datetime import datetime, timezone, timedelta
 import hashlib
 import random
 import storage
@@ -36,3 +37,19 @@ def generate_account_number():
         acct = "".join(str(random.randint(0,9)) for _ in range(10))
         if not storage.account_exists(acct):
             return acct
+
+def get_timestamp():
+    west_african_time = timezone(timedelta(hours=1))# WAT is GMT+1
+    now = datetime.now(west_african_time)
+    formatted_time = now.strftime("%Y-%b-%d  %I:%M:%S %p %Z")
+    return formatted_time
+
+def generate_transaction_id(acct_num):
+    while True:
+        id = "".join(str(random.randint(0,9)) for _ in range(6))
+        transact_id = f"TXN-{id}"
+        record_check = storage.read_transaction_records(acct_num)
+        if not record_check:
+            return transact_id
+        if not any(transact_id in records for records in record_check):
+            return transact_id

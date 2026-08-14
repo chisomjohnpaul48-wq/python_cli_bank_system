@@ -1,4 +1,5 @@
 import storage
+import transactions
 
 class BankAccount:
     def __init__(self, first_name, last_name, age, email, contact, hashed_pin, account_number, balance):
@@ -19,16 +20,23 @@ class BankAccount:
     def deposit(self, amount):
         if amount > 0:
             self.balance += amount
-            return storage.update_balance(self.acct_num, self.balance)
+            deposit_update = storage.update_balance(self.acct_num, self.balance)
+            if deposit_update:
+                return transactions.log_transaction(self.acct_num, "DEPOSIT", amount, self.check_balance())
         else:
             return False
 
     def withdrawal(self, amount):
         if 0 < amount <= self.balance:
             self.balance -= amount
-            return storage.update_balance(self.acct_num, self.balance)
+            withdrawal_update = storage.update_balance(self.acct_num, self.balance)
+            if withdrawal_update:
+                return transactions.log_transaction(self.acct_num, "WITHDRAWAL", amount, self.check_balance())
         else:
             return False
 
     def check_balance(self):
         return self.balance 
+
+    def read_txns(self):
+        return transactions.display_txn_history(self.acct_num)
